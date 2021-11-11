@@ -25,6 +25,15 @@ async function run() {
       const result = await userCollection.insertOne(userInfo);
       res.json(result);
     })
+    app.put('/user/admin',async(req,res)=>{
+      const user=req.body;
+      const filter = {email:user.email};
+      const update = {
+        $set:{role:'admin'}
+      }
+      const result = await userCollection.updateOne(filter,update);
+      res.json(result);
+    })
 
 
   } finally {
