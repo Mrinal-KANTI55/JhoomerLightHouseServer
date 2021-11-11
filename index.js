@@ -19,19 +19,27 @@ async function run() {
     await client.connect();
     const database = client.db("Light-house");
     const userCollection = database.collection("User");
+    const productCollection = database.collection("product");
+    //   insert offer 
+    app.post('/product', async (req, res) => {
+      const data = req.body;
+      const result = await productCollection.insertOne(data);
+      console.log(`product was insert : ${result.insertedId}`);
+      res.send(result);
+    });
     //insert user name and mail
     app.post('/user', async (req, res) => {
       const userInfo = req.body;
       const result = await userCollection.insertOne(userInfo);
       res.json(result);
     })
-    app.put('/user/admin',async(req,res)=>{
-      const user=req.body;
-      const filter = {email:user.email};
+    app.put('/user/admin', async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
       const update = {
-        $set:{role:'admin'}
+        $set: { role: 'admin' }
       }
-      const result = await userCollection.updateOne(filter,update);
+      const result = await userCollection.updateOne(filter, update);
       res.json(result);
     })
 
