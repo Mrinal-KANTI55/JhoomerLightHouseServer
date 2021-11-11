@@ -2,6 +2,8 @@ require('dotenv').config()
 const { MongoClient } = require('mongodb');
 const express = require('express')
 const cors = require('cors')
+const ObjectId = require('mongodb').ObjectId;
+
 
 const app = express()
 const port = process.env.PORT || 4000;
@@ -20,6 +22,12 @@ async function run() {
     const database = client.db("Light-house");
     const userCollection = database.collection("User");
     const productCollection = database.collection("product");
+     //   get all offers 
+     app.get('/product', async (req, res) => {
+      const offer = productCollection.find({});
+      const result = await offer.toArray();
+      res.json(result);
+    });
     //   insert offer 
     app.post('/product', async (req, res) => {
       const data = req.body;
@@ -42,6 +50,13 @@ async function run() {
       const result = await userCollection.updateOne(filter, update);
       res.json(result);
     })
+    // delete product by admin 
+    app.delete('/product/:id', async (req, res) => {
+      const id = req.params.id;
+      const data = { _id: ObjectId(id) };
+      const result = await userCollection.deleteOne(data);
+      res.json(result);
+    });
 
 
   } finally {
