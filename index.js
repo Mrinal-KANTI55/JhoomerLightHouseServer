@@ -22,6 +22,7 @@ async function run() {
     const database = client.db("Light-house");
     const userCollection = database.collection("User");
     const productCollection = database.collection("product");
+    const productReviewCollection = database.collection("productReview");
     const CustomerBuyProductCollection = database.collection("CustomerBuyProduct");
     //   get all offers 
     app.get('/product', async (req, res) => {
@@ -54,6 +55,13 @@ async function run() {
     app.post('/product', async (req, res) => {
       const data = req.body;
       const result = await productCollection.insertOne(data);
+      console.log(`product was insert : ${result.insertedId}`);
+      res.send(result);
+    });
+    //   insert product review 
+    app.post('/reviewOrder', async (req, res) => {
+      const data = req.body;
+      const result = await productReviewCollection.insertOne(data);
       console.log(`product was insert : ${result.insertedId}`);
       res.send(result);
     });
