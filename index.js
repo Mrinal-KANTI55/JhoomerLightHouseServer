@@ -29,6 +29,12 @@ async function run() {
       const result = await products.toArray();
       res.json(result);
     });
+     //   get all info Customer Buy Product
+     app.get('/customerOrder', async (req, res) => {
+      const products = CustomerBuyProductCollection.find({});
+      const result = await products.toArray();
+      res.json(result);
+    });
     // find one offer 
     app.get('/product/:id', async (req, res) => {
       const productId = req.params.id;
@@ -54,6 +60,7 @@ async function run() {
       const data = req.body;
       const result = await CustomerBuyProductCollection.insertOne(data);
       console.log(`order info inserted : ${result.insertedId}`);
+      console.log(result);
       res.send(result);
     });
     // set a mamber as admin
@@ -71,6 +78,13 @@ async function run() {
       const id = req.params.id;
       const data = { _id: ObjectId(id) };
       const result = await productCollection.deleteOne(data);
+      res.json(result);
+    });
+    // delete customer Order by admin 
+    app.delete('/customerOrder/:id', async (req, res) => {
+      const id = req.params.id;
+      const data = { _id: ObjectId(id) };
+      const result = await CustomerBuyProductCollection.deleteOne(data);
       res.json(result);
     });
 
