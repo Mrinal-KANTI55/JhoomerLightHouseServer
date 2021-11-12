@@ -23,14 +23,14 @@ async function run() {
     const userCollection = database.collection("User");
     const productCollection = database.collection("product");
     const CustomerBuyProductCollection = database.collection("CustomerBuyProduct");
-     //   get all offers 
-     app.get('/product', async (req, res) => {
+    //   get all offers 
+    app.get('/product', async (req, res) => {
       const products = productCollection.find({});
       const result = await products.toArray();
       res.json(result);
     });
-     //   get all info Customer Buy Product
-     app.get('/customerOrder', async (req, res) => {
+    //   get all info Customer Buy Product
+    app.get('/customerOrder', async (req, res) => {
       const products = CustomerBuyProductCollection.find({});
       const result = await products.toArray();
       res.json(result);
@@ -87,6 +87,20 @@ async function run() {
       const result = await CustomerBuyProductCollection.deleteOne(data);
       res.json(result);
     });
+    // update order info by admin 
+    app.put('/customerOrder/:id', async (req, res) => {
+      const userId = req.params.id;
+      const userInfo = req.body;
+      const userNumber = { _id: ObjectId(userId) };
+      const options = { upsert: true };
+      const updateInformation = {
+        $set: {
+          OrederState: userInfo.updateState
+        },
+      };
+      const result = await CustomerBuyProductCollection.updateOne(userNumber, updateInformation, options);
+      res.json(result);
+    })
 
 
   } finally {
