@@ -44,6 +44,12 @@ async function run() {
       const result = await products.toArray();
       res.json(result);
     });
+    //   get all Customer Product rate
+    app.get('/reviewOrder', async (req, res) => {
+      const products = productReviewCollection.find({});
+      const result = await products.toArray();
+      res.json(result);
+    });
     // find one offer 
     app.get('/product/:id', async (req, res) => {
       const productId = req.params.id;
