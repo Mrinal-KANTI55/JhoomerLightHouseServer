@@ -24,9 +24,16 @@ async function run() {
     const productCollection = database.collection("product");
      //   get all offers 
      app.get('/product', async (req, res) => {
-      const offer = productCollection.find({});
-      const result = await offer.toArray();
+      const products = productCollection.find({});
+      const result = await products.toArray();
       res.json(result);
+    });
+    // find one offer 
+    app.get('/product/:id', async (req, res) => {
+      const productId = req.params.id;
+      const product = { _id: ObjectId(productId) };
+      const result = await collection.findOne(product);
+      res.send(result);
     });
     //   insert offer 
     app.post('/product', async (req, res) => {
@@ -41,6 +48,7 @@ async function run() {
       const result = await userCollection.insertOne(userInfo);
       res.json(result);
     })
+    // set a mamber as admin
     app.put('/user/admin', async (req, res) => {
       const user = req.body;
       const filter = { email: user.email };
