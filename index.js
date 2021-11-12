@@ -22,6 +22,7 @@ async function run() {
     const database = client.db("Light-house");
     const userCollection = database.collection("User");
     const productCollection = database.collection("product");
+    const CustomerBuyProductCollection = database.collection("CustomerBuyProduct");
      //   get all offers 
      app.get('/product', async (req, res) => {
       const products = productCollection.find({});
@@ -48,6 +49,13 @@ async function run() {
       const result = await userCollection.insertOne(userInfo);
       res.json(result);
     })
+    //   insert user Buy information 
+    app.post('/customerOrder', async (req, res) => {
+      const data = req.body;
+      const result = await CustomerBuyProductCollection.insertOne(data);
+      console.log(`order info inserted : ${result.insertedId}`);
+      res.send(result);
+    });
     // set a mamber as admin
     app.put('/user/admin', async (req, res) => {
       const user = req.body;
