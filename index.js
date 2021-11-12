@@ -33,7 +33,7 @@ async function run() {
     app.get('/customerOrder/:email', async (req, res) => {
       const usersEmail = req.params.email;
       const offerNum = { userEmail: usersEmail };
-      const offerCollect = userCollection.find(offerNum);
+      const offerCollect = CustomerBuyProductCollection.find(offerNum);
       const result = await offerCollect.toArray();
       res.json(result);
     });
