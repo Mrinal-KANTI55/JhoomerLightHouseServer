@@ -29,6 +29,14 @@ async function run() {
       const result = await products.toArray();
       res.json(result);
     });
+    //   get all user own offers 
+    app.get('/customerOrder/:email', async (req, res) => {
+      const usersEmail = req.params.email;
+      const offerNum = { userEmail: usersEmail };
+      const offerCollect = userCollection.find(offerNum);
+      const result = await offerCollect.toArray();
+      res.json(result);
+    });
     //   get all info Customer Buy Product
     app.get('/customerOrder', async (req, res) => {
       const products = CustomerBuyProductCollection.find({});
@@ -91,11 +99,12 @@ async function run() {
     app.put('/customerOrder/:id', async (req, res) => {
       const userId = req.params.id;
       const userInfo = req.body;
+      console.log(userInfo);
       const userNumber = { _id: ObjectId(userId) };
       const options = { upsert: true };
       const updateInformation = {
         $set: {
-          OrederState: userInfo.updateState
+          OrederState: userInfo.OrederState
         },
       };
       const result = await CustomerBuyProductCollection.updateOne(userNumber, updateInformation, options);
