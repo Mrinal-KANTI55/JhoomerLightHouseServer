@@ -31,8 +31,8 @@ async function run() {
     // find one offer 
     app.get('/product/:id', async (req, res) => {
       const productId = req.params.id;
-      const product = { _id: ObjectId(productId) };
-      const result = await collection.findOne(product);
+      const productFind = { _id: ObjectId(productId) };
+      const result = await productCollection.findOne(productFind);
       res.send(result);
     });
     //   insert offer 
